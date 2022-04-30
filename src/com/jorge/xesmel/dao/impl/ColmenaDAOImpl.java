@@ -41,16 +41,15 @@ public class ColmenaDAOImpl implements ColmenaDAO {
 		try {
 			
 			
-			String sql = "SELECT id, cod_en_apiario,fecha_alta, fecha_baja,apiario_id,tipo_origen_id"
-									+" FROM colmena"
-									+" WHERE id =  ?";
+			String sql = " SELECT id, cod_en_apiario, fecha_alta, fecha_baja, apiario_id, tipo_origen_id "
+									+" FROM colmena "
+									+" WHERE id = ? ";
 			
 			if(logger.isDebugEnabled()) {
 			logger.debug("ColmenaDAO.findBy:SQL= "+sql);
 			}
 			
-			preparedStatement = c.prepareStatement(sql,
-			ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			preparedStatement = c.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			JDBCUtils.setParameter(preparedStatement, 1, id);			
 			rs = preparedStatement.executeQuery();
@@ -228,6 +227,7 @@ public class ColmenaDAOImpl implements ColmenaDAO {
 			JDBCUtils.setParameter(preparedStatement, i++, colmena.getFechaBaja());
 			JDBCUtils.setParameter(preparedStatement, i++, colmena.getApiarioId()); 
 			JDBCUtils.setParameter(preparedStatement, i++, colmena.getTipoOrigenId());
+			JDBCUtils.setParameter(preparedStatement, i++, colmena.getId());
 			
 
 			updatedRows = preparedStatement.executeUpdate();

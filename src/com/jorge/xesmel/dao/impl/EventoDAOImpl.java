@@ -34,9 +34,9 @@ public class EventoDAOImpl implements EventoDAO {
 		try {
 
 			
-			String sql = " SELECT id,comentario,fecha_inicio,fecha_fin,colmena_id,medicamento_id,tipo_evento_id "
+			String sql = " SELECT id, comentario, fecha_inicio, fecha_fin, colmena_id, medicamento_id, tipo_evento_id "
 					+ " FROM evento "
-				    + " WHERE id = ?";
+				    + " WHERE id = ? ";
 			if(logger.isDebugEnabled()) {
 			logger.debug("EventoDAO.findBy:SQL= "+sql);
 			}
@@ -73,39 +73,39 @@ public class EventoDAOImpl implements EventoDAO {
 
 			
 			
-			StringBuilder sqlSB = new StringBuilder(" SELECT id,comentario,fecha_inicio,fecha_fin,colmena_id,medicamento_id,tipo_evento_id ") 
+			StringBuilder sqlSB = new StringBuilder(" SELECT id, comentario, fecha_inicio, fecha_fin, colmena_id, medicamento_id, tipo_evento_id ") 
 					
 					.append( " FROM evento ");
 			
 			boolean first = true;
 
 			if(ec.getId()!=null) {
-				addClause(sqlSB, first, " WHERE id = ?");
+				addClause(sqlSB, first, " WHERE id = ? ");
 				first = false;
 			}
 
 			if (ec.getComentario()!=null) {
-				addClause(sqlSB, first, " and comentario = ?");
+				addClause(sqlSB, first, " and comentario = ? ");
 				first = false;
 			}
 			if (ec.getFechaInicio()!=null) {
-				addClause(sqlSB, first, " and fecha_inicio = ?");
+				addClause(sqlSB, first, " and fecha_inicio = ? ");
 				first = false;
 			}
 			if (ec.getFechaFin()!=null) {
-				addClause(sqlSB, first, " and fecha_fin = ?");
+				addClause(sqlSB, first, " and fecha_fin = ? ");
 				first = false;
 			}
 			if (ec.getColmenaId()!=null) {
-				addClause(sqlSB, first, " and colmena_id = ?");
+				addClause(sqlSB, first, " and colmena_id = ? ");
 				first = false;
 			}
 			if (ec.getMedicamentoId()!=null) {
-				addClause(sqlSB, first, " and medicamento_id = ?");
+				addClause(sqlSB, first, " and medicamento_id = ? ");
 				first = false;
 			}
 			if (ec.getTipoEventoId()!=null) {
-				addClause(sqlSB, first, " and tipo_evento_id = ?");
+				addClause(sqlSB, first, " and tipo_evento_id = ? ");
 				first = false;
 			}
 			
@@ -127,6 +127,9 @@ public class EventoDAOImpl implements EventoDAO {
 			JDBCUtils.setParameter(preparedStatement, i++, ec.getComentario());
 			JDBCUtils.setParameter(preparedStatement, i++, ec.getFechaInicio());
 			JDBCUtils.setParameter(preparedStatement, i++, ec.getFechaFin());
+			JDBCUtils.setParameter(preparedStatement, i++, ec.getColmenaId());
+			JDBCUtils.setParameter(preparedStatement, i++, ec.getMedicamentoId());
+			JDBCUtils.setParameter(preparedStatement, i++, ec.getTipoEventoId());
 
 			rs = preparedStatement.executeQuery();
 
@@ -140,7 +143,7 @@ public class EventoDAOImpl implements EventoDAO {
 
 		} catch (SQLException e) {			
 			logger.error(ec, e);
-			throw new DataException(ec.getComentario().toString());
+			throw new DataException(e);
 		} finally {
 			JDBCUtils.close(rs);
 			JDBCUtils.close(preparedStatement);
@@ -226,11 +229,12 @@ public class EventoDAOImpl implements EventoDAO {
 			JDBCUtils.setParameter(preparedStatement, i++, evento.getColmenaId()); 
 			JDBCUtils.setParameter(preparedStatement, i++, evento.getMedicamentoId(), true);				
 			JDBCUtils.setParameter(preparedStatement, i++, evento.getTipoEventoId());
+			JDBCUtils.setParameter(preparedStatement, i++, evento.getId());
 			
 
 			updatedRows = preparedStatement.executeUpdate();
 			if (updatedRows!=1) {
-				
+				throw new UserNotFoundException(evento.getNombreTipoEvento()+" no encontrado");
 			}
 		
 		} catch (SQLException e) {			

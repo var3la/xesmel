@@ -7,6 +7,7 @@ import com.jorge.xesmel.exception.DataException;
 import com.jorge.xesmel.exception.MailException;
 import com.jorge.xesmel.exception.ServiceException;
 import com.jorge.xesmel.exception.UserAlreadyExistsException;
+import com.jorge.xesmel.model.Apiario;
 import com.jorge.xesmel.model.Usuario;
 import com.jorge.xesmel.service.UsuarioService;
 import com.jorge.xesmel.service.impl.UsuarioServiceImpl;
@@ -35,14 +36,14 @@ public class UsuarioServiceTest {
 		}catch (Exception e) {
 			
 		}
-		logger.info("usuario encontrado");
+		logger.info("usuario "+usuario.getEmail()+" encontrado");
 	}
 
 	public void testUsuarioLogin() {
         logger.trace("Begin...");
 
         
-        String email = "manuela1644439835708@gmail.comv";
+        String email = "xesmelapp@gmail.com";
         String password = "manuela";
         
         try {
@@ -67,20 +68,50 @@ public class UsuarioServiceTest {
 		logger.trace("Testing signUp...");
 		usuario = new Usuario();
 		
-		long num = System.currentTimeMillis();
-		usuario.setNombre("manuela");
+		//long num = System.currentTimeMillis();
+		usuario.setNombre("Martina");
 		usuario.setApellido("gonzalez");
 		usuario.setSegundoApellido("gonzalez");
-		usuario.setNombreComercial("boamel");
-		usuario.setDni("99999959j");
+		usuario.setNombreComercial("moitamel");
+		usuario.setDni("34999959j");
 		usuario.setTelefono("777888999");
-		usuario.setEmail("xesmelapp@gmail.com");
+		usuario.setEmail("jgvarela79@hotmail.com");
 		usuario.setPassword("manuela");		
-		usuario.setRega("testprueba");
+		usuario.setRega("ES274567895");
 		logger.trace("Creando usuario "+usuario.getEmail());
 		try {
 			
 			usuarioService.signUp(usuario);
+			
+		} catch (UserAlreadyExistsException uae) {		
+			logger.trace("El usuario ya existe.");
+			logger.error(usuario.getEmail()+ uae);
+		} catch (MailException me) {
+			logger.trace("Ha habido un problema al enviar el e-mail.");
+			logger.error(usuario.getEmail()+me);
+		} catch (ServiceException se) {
+			logger.error(se.getMessage());
+		}
+	}
+	
+	public void testUpdate() {
+		logger.trace("Testing Update...");
+		usuario = new Usuario();
+		usuario.setId(1L);
+		//long num = System.currentTimeMillis();
+		usuario.setNombre("Martina");
+		usuario.setApellido("gonzalez");
+		usuario.setSegundoApellido("gonzalez");
+		usuario.setNombreComercial("moitamel");
+		usuario.setDni("34999959j");
+		usuario.setTelefono("222222222");
+		usuario.setEmail("jgvarela79@hotmail.com");
+		usuario.setPassword("manuela");		
+		usuario.setRega("ES2745674309");
+		logger.trace("Actualizando usuario "+usuario.getEmail());
+		try {
+			
+			usuarioService.update(usuario);
 			
 		} catch (UserAlreadyExistsException uae) {		
 			logger.trace("El usuario ya existe.");
@@ -99,7 +130,7 @@ public class UsuarioServiceTest {
 		usuario = new Usuario();
 		Long id=null;
 		
-		usuario.setId(37L);
+		usuario.setId(10L);
 		try {
 		
 			usuarioService.delete(id);
@@ -110,13 +141,35 @@ public class UsuarioServiceTest {
 		
 	}
 	
+public void testFindbyId() {
+		
+		logger.trace("testing delete....");
+		usuario = new Usuario();
+		
+		
+		
+		try {
+		
+			usuario = usuarioService.findById(5L);
+			logger.error(usuario);
+		}catch (ServiceException sqle) {
+			logger.error(sqle);
+			logger.trace("El usuario no se puede borrar.");
+		}
+		
+	}
+	
+
+	
 	
 	public static void main(String args[]) {
 		UsuarioServiceTest test = new UsuarioServiceTest();
-		test.testSignUp();
+		test.testFindbyId();
+		//test.testSignUp();
 		//test.testDelete();
 		//test.testFind();
 		//test.testUsuarioLogin();
+		//test.testUpdate();
 	}
 
 }

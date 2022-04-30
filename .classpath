@@ -16,5 +16,9 @@
 	<classpathentry kind="lib" path="lib/log4j-core-2.17.1.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-api-2.17.1.jar"/>
 	<classpathentry kind="lib" path="config"/>
+	<classpathentry kind="lib" path="C:/t/commons-validator-1.7/commons-validator-1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jorge/Desktop/programacion/helloworld-wks/xesmel/lib/c3p0/c3p0-0.9.5.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jorge/Desktop/programacion/helloworld-wks/xesmel/lib/c3p0/mchange-commons-java-0.2.19.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v9.0"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

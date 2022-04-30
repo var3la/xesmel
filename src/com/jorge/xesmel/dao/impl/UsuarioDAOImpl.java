@@ -45,8 +45,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			
 
 			
-			preparedStatement = c.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY);
+			preparedStatement = c.prepareStatement(sql);
 
 			JDBCUtils.setParameter(preparedStatement, 1, id);
 			rs = preparedStatement.executeQuery();
@@ -75,7 +74,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 			// SQL
 			String sql = " SELECT id, nombre, apellido1, apellido2, nombre_comercial, dni, telefono, email, password, rega "
-					+ " FROM usuario " + " WHERE email = ?";
+					+ " FROM usuario " + " WHERE email = ? ";
 			
 			if (logger.isDebugEnabled()) {
 				logger.debug("UsuarioDAO.findByEmail:SQL= "+ sql);
@@ -122,27 +121,27 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			boolean first = false;
 			
 			if (uc.getId() != null) {
-				addClause(sqlSB, first, " id = ?");
+				addClause(sqlSB, first, " id = ? ");
 				first = false;
 			}
 			if (uc.getNombre() != null) {
-				addClause(sqlSB, first, " and nombre = ?");
+				addClause(sqlSB, first, " and nombre = ? ");
 				first = false;
 			}
 			if (uc.getApellido() != null) {
-				addClause(sqlSB, first, " and apellido1 = ?");
+				addClause(sqlSB, first, " and apellido1 = ? ");
 				first = false;
 			}
 			if (uc.getSegundoApellido() != null) {
-				addClause(sqlSB, first, " and apellido2 = ?");
+				addClause(sqlSB, first, " and apellido2 = ? ");
 				first = false;
 			}
 			if (uc.getNombreComercial() != null) {
-				addClause(sqlSB, first, " and nombre_comercial = ?");
+				addClause(sqlSB, first, " and nombre_comercial = ? ");
 				first = false;
 			}
 			if (uc.getDni() != null) {
-				addClause(sqlSB, first, " and dni = ?");
+				addClause(sqlSB, first, " and dni = ? ");
 				first = false;
 			}
 			if (uc.getTelefono() != null) {
@@ -150,15 +149,15 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				first = false;
 			}
 			if (uc.getEmail() != null) {
-				addClause(sqlSB, first, " and email = ?");
+				addClause(sqlSB, first, " and email = ? ");
 				first = false;
 			}
 			if (uc.getPassword() != null) {
-				addClause(sqlSB, first, " and password = ?");
+				addClause(sqlSB, first, " and password = ? ");
 				first = false;
 			}
 			if (uc.getRega() != null) {
-				addClause(sqlSB, first, " and rega = ?");
+				addClause(sqlSB, first, " and rega = ? ");
 				first = false;
 			}
 
@@ -214,8 +213,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		try {
 
 
-			String sql = " INSERT INTO usuario(nombre,apellido1,apellido2,nombre_comercial,dni,telefono,email,password,rega) "
-					+ " VALUES (?,?,?,?,?,?,?,?,?) ";
+			String sql = " INSERT INTO usuario( nombre, apellido1, apellido2, nombre_comercial, dni, telefono, email, password, rega) "
+					+ " VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
 			
 			if(logger.isDebugEnabled()) {
 				logger.debug("UsuarioDAO.create SQL: " + sql);
@@ -269,8 +268,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			
 
 			String sql = "UPDATE USUARIO " + "SET NOMBRE = ?," + "	   APELLIDO1= ?," + "	   APELLIDO2= ?,"
-					+ "    NOMBRE_COMERCIAL= ?," + "    DNI= ?," + "    EMAIL= ?," + "    PASSWORD= ?," + "    REGA= ?,"
-					+ " WHERE ID = ?";
+					+ "    NOMBRE_COMERCIAL= ?," + "    DNI= ?," + "    TELEFONO= ?,"+"    EMAIL= ?,"+"    PASSWORD= ?," + "    REGA= ? "
+					+ " WHERE ID = ? ";
 			
 			if (logger.isDebugEnabled()) {
 				logger.debug("UsuarioDAO.update SQL: ", sql);
@@ -279,15 +278,18 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			preparedStatement = c.prepareStatement(sql);
 
 			int i = 1;
-
+			
+			
 			JDBCUtils.setParameter(preparedStatement, i++, usuario.getNombre());
 			JDBCUtils.setParameter(preparedStatement, i++, usuario.getApellido());
 			JDBCUtils.setParameter(preparedStatement, i++, usuario.getSegundoApellido());
 			JDBCUtils.setParameter(preparedStatement, i++, usuario.getNombreComercial());
 			JDBCUtils.setParameter(preparedStatement, i++, usuario.getDni());
+			JDBCUtils.setParameter(preparedStatement, i++, usuario.getTelefono());
 			JDBCUtils.setParameter(preparedStatement, i++, usuario.getEmail());
 			JDBCUtils.setParameter(preparedStatement, i++, usuario.getPassword());
 			JDBCUtils.setParameter(preparedStatement, i++, usuario.getRega());
+			JDBCUtils.setParameter(preparedStatement, i++, usuario.getId());
 
 			updatedRows = preparedStatement.executeUpdate();
 			if (updatedRows != 1) {

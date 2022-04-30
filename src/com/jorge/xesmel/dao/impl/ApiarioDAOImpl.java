@@ -29,6 +29,8 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 		
 	}
 	
+	
+	
 	@Override
 	public Apiario findById(Connection c, Long id) throws DataException{
 		
@@ -37,31 +39,25 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 		PreparedStatement preparedStatement = null;
 		ResultSet rs = null;
 		Apiario apiario = null;
-		
-		try {
-			
-		
-						
-			String sql = "SELECT id, nombre, ubicacion, latitud, longitud,usuarioId"
-									+" FROM apiario"
-									+" WHERE id = ?";
-			
-			if(logger.isDebugEnabled()) {
-			logger.debug("ApiarioDAO.findBy:SQL="+sql);
-			}
-			
-			preparedStatement = c.prepareStatement(sql, 
-					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+	
+		try {					
+			String sql = " SELECT id, nombre, ubicacion, latitud, longitud, usuario_id "
+									+" FROM apiario "
+ 									+" WHERE id = ? ";
 
-		JDBCUtils.setParameter(preparedStatement, 1, id);			
-		rs = preparedStatement.executeQuery();
-		
-		if (rs.next()) {
-			apiario = LoadNext(rs);
-		}
-		
-		} catch (SQLException e) {			
-			logger.error(id, e);
+			
+			preparedStatement = c.prepareStatement(sql);
+
+			JDBCUtils.setParameter(preparedStatement, 1, id);
+			rs = preparedStatement.executeQuery();
+
+			if (rs.next()) {
+				apiario = loadNext(rs);
+			}
+
+		} catch (SQLException sqle) {
+			logger.error("findById: "+id+": "+sqle.getMessage(), sqle);
+			throw new DataException("findById: "+id+": "+sqle.getMessage(), sqle);
 		} finally {
 			JDBCUtils.close(rs);
 			JDBCUtils.close(preparedStatement);
@@ -71,6 +67,11 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 	}
 	
 	
+	
+	
+	
+	
+	
 	@Override
 	public List<Apiario> findBy(Connection c, ApiarioCriteria ac) throws DataException{
 		
@@ -78,9 +79,9 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 		ResultSet rs = null;
 		List<Apiario> apiarios = null;
 		try {
-		
+	
 			
-			StringBuilder sqlSB = new StringBuilder(" SELECT id,nombre,ubicacion,latitud,longitud,usuario_id")
+			StringBuilder sqlSB = new StringBuilder(" SELECT id, nombre, ubicacion, latitud, longitud, usuario_id")
 					.append(" FROM apiario ");
 			
 			boolean first = false;
@@ -137,7 +138,7 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 
 		Apiario apiario = null;
 		while (rs.next()) {
-			apiario = LoadNext(rs);
+			apiario = loadNext(rs);
 			apiarios.add(apiario);
 		}
 
@@ -160,10 +161,10 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 		try {
 		
 			
-			String sql = "select u.nombre,u.nombre_comercial,a.id,a.nombre,a.ubicacion "
-					+ "from usuario u"
-					+ "inner join apiario a on u.id=a.usuario_id"
-					+"where u.id = ?";
+			String sql = " select u.nombre, u.nombre_comercial, a.id, a.nombre, a.ubicacion "
+					+ " from usuario u "
+					+ " inner join apiario a on u.id = a.usuario_id  "
+					+" where u.id = ? ";
 			
 			if(logger.isDebugEnabled()) {
 				
@@ -171,18 +172,17 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 			}
 			
 			
-			preparedStatement = c.prepareStatement(sql, 
-					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			preparedStatement = c.prepareStatement(sql);
 
 		JDBCUtils.setParameter(preparedStatement, 1, id);			
 		rs = preparedStatement.executeQuery();
 		
 		if (rs.next()) {
-			apiario = LoadNext(rs);
+			apiario = loadNext(rs);
 		}
 		
 		} catch (SQLException e) {			
-			logger.error(id, e);
+			logger.error("buscando : "+id, e);
 		} finally {
 			JDBCUtils.close(rs);
 			JDBCUtils.close(preparedStatement);
@@ -200,8 +200,8 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 		try {
 		
 			
-			String sql =" insert into apiario(nombre,ubicacion,latitud,longitud,usuarioId)"
-					+ " values (?,?,?,?,?) ";
+			String sql =" insert into apiario( nombre, ubicacion, latitud, longitud, usuario_id )"
+					+ " values ( ? , ? , ? , ? , ?) ";
 			
 			preparedStatement = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
@@ -220,7 +220,7 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 				}
 				
 				}else {
-					
+					throw new DataException(apiario.getNombre());
 				}
 			
 		} catch (SQLException e) {			
@@ -243,11 +243,11 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 			
 			
 			String sql ="Update apiario "
-					+ " set nombre = ?,"
-					+ " ubucacion = ?,"
+					+ " set nombre = ?, "
+					+ " ubucacion = ?, "
 					+ " latitud = ?,"
 					+ " longitud = ?,"
-					+ " usuario_id = ?,"
+					+ " usuario_id = ? "
 					+ " where id = ? ";
 			
 			preparedStatement = c.prepareStatement(sql);
@@ -258,6 +258,7 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 			JDBCUtils.setParameter(preparedStatement, i++, apiario.getLatitud());
 			JDBCUtils.setParameter(preparedStatement, i++, apiario.getLongitud());
 			JDBCUtils.setParameter(preparedStatement, i++, apiario.getUsuarioId());
+			JDBCUtils.setParameter(preparedStatement, i++, apiario.getId());
 			
 			int insertedRows = preparedStatement.executeUpdate();
 			if (insertedRows==1) {
@@ -309,7 +310,7 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 	}
 
 	
-	private static Apiario LoadNext(ResultSet rs) 
+	private static Apiario loadNext(ResultSet rs) 
 		throws SQLException {
 			Apiario apiario = new Apiario();
 			

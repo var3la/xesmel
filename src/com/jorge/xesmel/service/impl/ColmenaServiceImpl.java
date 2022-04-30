@@ -56,7 +56,7 @@ public class ColmenaServiceImpl implements ColmenaService{
 	
 	@Override
 	public Results<Colmena> findBy(ColmenaCriteria cc, int startIndex, int pageSize) throws DataException{
-		
+		logger.info("searching colmena criteria: "+cc);
 		Connection c = null;
 		Results<Colmena> results = null;
 		boolean commitOrRollback = false;
@@ -66,7 +66,9 @@ public class ColmenaServiceImpl implements ColmenaService{
 			
 			c.setAutoCommit(false);
 			
-			results = colmenaDAO.findBy(c, cc, 0, 0);
+			results = colmenaDAO.findBy(c, cc, startIndex, pageSize);
+			
+			commitOrRollback = true;
 			
 		}catch (SQLException sqle) {
 			logger.error(cc.toString(),sqle);

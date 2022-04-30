@@ -92,7 +92,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 			StringBuilder wellcomeMsgSb = new StringBuilder("Hola! ")			
 					.append(u.getNombre())
-					.append(" Bienvenid@");
+					.append(" Bienvenid@ ");
 
 
 			String wellcomeMsg = wellcomeMsgSb.toString(); 
@@ -129,10 +129,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 			c = ConnectionManager.getConnection();
 			c.setAutoCommit(false);
 			
-			if(u.getPassword()!=null) {
-				
-				u.setPassword(PasswordEncryptionUtil.encryptPassword(u.getPassword()));
-			}
+			
 			
 			usuarioDAO.update(c, u);
 			commitOrRollback=true;

@@ -120,9 +120,9 @@ public class ApiarioServiceImpl implements ApiarioService{
 			
 			c.setAutoCommit(false);
 			
-			if(apiarioDAO.findById(c, a.getId())!=null) {
+			/*if(apiarioDAO.findById(c, a.getId())!=null) {
 				throw new UserAlreadyExistsException(a.toString());
-			}
+			}*/
 			apiarioId = apiarioDAO.create(c, a);
 			commitOrRollback = true;
 		}catch (DataException de) {

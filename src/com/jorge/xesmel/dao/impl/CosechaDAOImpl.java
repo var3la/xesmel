@@ -39,9 +39,9 @@ public class CosechaDAOImpl implements CosechaDAO{
 		try {
 			
 			
-			String sql = " SELECT id, cantidad, fecha_recogida, colmena_id,tipo_cosecha_id"
-									+" FROM cosecha"
-									+" WHERE id = ?";
+			String sql = " SELECT id, cantidad, fecha_recogida, colmena_id , tipo_cosecha_id "
+									+" FROM cosecha "
+									+" WHERE id = ? ";
 			
 			if(logger.isDebugEnabled()) {
 			logger.debug("CosechaDAO.findBy:SQL= "+sql);
@@ -80,24 +80,24 @@ public class CosechaDAOImpl implements CosechaDAO{
 			boolean first = true;
 			
 			if(id!=null) {
-				addClause(sqlSB,first," WHERE id = ?");
+				addClause(sqlSB,first," WHERE id = ? ");
 				first = false;
 			}
 
 			if (cantidad!=null) {
-				addClause(sqlSB,first," and cantidad = ?");
+				addClause(sqlSB,first," and cantidad = ? ");
 				first=false;
 			}
 			if (fechaRecogida!=null) {
-				addClause(sqlSB,first," and fecha_recogida = ?");
+				addClause(sqlSB,first," and fecha_recogida = ? ");
 				first=false;
 			}
 			if (colmenaId!=null) {
-				addClause(sqlSB,first," and colmena_id= ?");
+				addClause(sqlSB,first," and colmena_id= ? ");
 				first=false;
 			}
 			if (tipoCosechaId!=null) {
-				addClause(sqlSB,first," and tipo_cosecha_id = ?");
+				addClause(sqlSB,first," and tipo_cosecha_id = ? ");
 				first=false;
 			}
 			

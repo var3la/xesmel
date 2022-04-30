@@ -30,7 +30,7 @@ public class ColmenaServiceTest {
 		logger.trace("testing findById...");
 		colmena = new Colmena();
 		
-		colmena.setId(6L);
+		colmena.setId(3L);
 		logger.info("buscando colmena..."+colmena.getId());
 		try {
 			colmenaService.findById(colmena.getId());
@@ -43,10 +43,11 @@ public class ColmenaServiceTest {
 		logger.info("testing Create...");
 		colmena = new Colmena();
 		
-		colmena.setApiarioId(3L);
+		
 		colmena.setCodEnApiario(34L);
 		colmena.setFechaAlta(null);
 		colmena.setFechaBaja(null);
+		colmena.setApiarioId(3L);
 		colmena.setTipoOrigenId(2L);
 		System.out.println("creando colmena "+colmena.getId());
 		try {

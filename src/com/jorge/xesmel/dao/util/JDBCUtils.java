@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Date;
 
@@ -18,6 +19,7 @@ public class JDBCUtils {
 			throws SQLException {		
 		setParameter(ps, parameterIndex, value, false);
 	}
+
 	
 	
 	public static final void setParameter(PreparedStatement ps, int parameterIndex, Long value, boolean nullable) 
@@ -49,8 +51,8 @@ public class JDBCUtils {
 	public static void setParameter(PreparedStatement ps, int parameterIndex, Date value) 
 		throws SQLException {
 		if (value!=null) {
-			ps.setDate(parameterIndex, 
-								new java.sql.Date(value.getTime()));
+			//ps.setDate(parameterIndex, new java.sql.Date(value.getTime()));
+			ps.setTimestamp(parameterIndex, new Timestamp(value.getTime()));
 		}
 		
 	}

@@ -24,7 +24,7 @@ public class MailServiceTest {
 			String to = "xesmelapp@gmail.com";
 			mailService.sendEmail(from, "Test", "Prueba mailService", to);
 			
-			logger.fatal("Mail a "+to+" enviado con éxito.");
+			logger.info("Mail a "+to+" enviado con éxito.");
 		}catch (Exception e) {
 			logger.error( e);
 		}
