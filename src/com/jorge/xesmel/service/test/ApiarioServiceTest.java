@@ -54,7 +54,23 @@ public class ApiarioServiceTest {
 		}
 		
 	}
-	
+
+	public void testFindBy() throws DataException {
+
+		logger.info("testing findByUsuario...");
+		apiario = new Apiario();
+		usuario = new Usuario();
+
+		apiario.setUsuarioId(1L);;
+
+		try {
+			apiarioService.findByUsuarioId(apiario.getId());
+			logger.info("searching for apiario " + apiario.getNombre());
+		} catch (DataException de) {
+			logger.error("error buscando apiario " + apiario.getNombre() + de);
+		}
+
+	}
 	public void testCreate()throws ServiceException{
 		logger.info("testing createApiario: ");
 		Apiario a = new Apiario();
@@ -78,7 +94,7 @@ public class ApiarioServiceTest {
 	public static void main(String args[]) throws ServiceException{
 		ApiarioServiceTest test = new ApiarioServiceTest();
 		test.testFindById();
-		
+		test.testFindBy();
 		//test.testFindByUsuario();
 		//test.testCreate();
 	}

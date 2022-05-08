@@ -152,43 +152,48 @@ public class ApiarioDAOImpl implements ApiarioDAO{
 	return apiarios;	
 }
 	
-	public Apiario findByUsuario(Connection c, Long id)throws DataException{
-		
-		Apiario apiario = null;
+	public List<Apiario> findByUsuario(Connection c, Long id) throws DataException {
+	
 		PreparedStatement preparedStatement = null;
 		ResultSet rs = null;
-		
+		List<Apiario> apiarios = null;
+		Apiario apiario = null;
+	
 		try {
-		
-			
-			String sql = " select u.nombre, u.nombre_comercial, a.id, a.nombre, a.ubicacion "
-					+ " from usuario u "
-					+ " inner join apiario a on u.id = a.usuario_id  "
-					+" where u.id = ? ";
-			
-			if(logger.isDebugEnabled()) {
-				
+	
+			String sql = " select u.nombre, u.nombre_comercial, a.id, a.nombre, a.ubicacion " + " from usuario u "
+					+ " inner join apiario a on u.id = a.usuario_id  " + " where u.id = ? ";
+	
+			if (logger.isDebugEnabled()) {
+	
 				logger.debug("ApiarioDAO.findByIdUsuario:" + sql);
 			}
+	
+			preparedStatement = c.prepareStatement(sql.toString(), ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+	
+			int i=1;
+	
+			JDBCUtils.setParameter(preparedStatement, i++, id);
+	
+			rs = preparedStatement.executeQuery();
+	
+			apiarios = new ArrayList<Apiario>();
+	
 			
-			
-			preparedStatement = c.prepareStatement(sql);
-
-		JDBCUtils.setParameter(preparedStatement, 1, id);			
-		rs = preparedStatement.executeQuery();
-		
-		if (rs.next()) {
-			apiario = loadNext(rs);
-		}
-		
-		} catch (SQLException e) {			
-			logger.error("buscando : "+id, e);
+			while (rs.next()) {
+				apiario = loadNext(rs);
+				apiarios.add(apiario);
+			}
+	
+		} catch (SQLException e) {
+			logger.error(apiarios, e);
 		} finally {
 			JDBCUtils.close(rs);
 			JDBCUtils.close(preparedStatement);
-		
+	
 		}
-		return apiario;
+		return apiarios;
 	}
 	
 	@Override

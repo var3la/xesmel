@@ -13,7 +13,7 @@ public interface ApiarioService {
 	
 	public Apiario findById(Long id) throws DataException;
 	
-	public Apiario findByUsuarioId(Long id) throws DataException; 
+	public List<Apiario> findByUsuarioId(Long id) throws DataException; 
 
 	public Long create(Apiario a) throws DataException, ServiceException;
 

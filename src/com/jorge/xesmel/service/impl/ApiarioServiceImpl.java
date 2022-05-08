@@ -13,7 +13,6 @@ import com.jorge.xesmel.dao.util.ConnectionManager;
 import com.jorge.xesmel.dao.util.JDBCUtils;
 import com.jorge.xesmel.exception.DataException;
 import com.jorge.xesmel.exception.ServiceException;
-import com.jorge.xesmel.exception.UserAlreadyExistsException;
 import com.jorge.xesmel.model.Apiario;
 import com.jorge.xesmel.model.ApiarioCriteria;
 import com.jorge.xesmel.service.ApiarioService;
@@ -81,10 +80,10 @@ public class ApiarioServiceImpl implements ApiarioService{
 		return apiario;
 	}
 	@Override
-	public Apiario findByUsuarioId(Long id) throws DataException {
+	public List<Apiario> findByUsuarioId(Long id) throws DataException {
 		
 		Connection c = null;
-		Apiario apiario = null;
+		List <Apiario> apiarios = null;
 		boolean commitOrRollback = false;
 		
 		try {
@@ -93,7 +92,7 @@ public class ApiarioServiceImpl implements ApiarioService{
 			
 			c.setAutoCommit(false);
 			
-			apiario = apiarioDAO.findByUsuario(c, id);
+			apiarios = apiarioDAO.findByUsuario(c, id);
 			
 			commitOrRollback = false;
 		}catch (SQLException sqle) {
@@ -102,7 +101,7 @@ public class ApiarioServiceImpl implements ApiarioService{
 		}finally {
 			JDBCUtils.closeConnection(c, commitOrRollback);
 		}
-		return apiario;
+		return apiarios;
 	}
 	
 	

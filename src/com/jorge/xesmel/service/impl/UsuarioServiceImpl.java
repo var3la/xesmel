@@ -52,18 +52,22 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 			if(!passwordOK) {
 				throw new InvalidUserOrPasswordException(email);
+				
 			}
 
 			commitOrRollback = true;
 			logger.info("Comit: "+commitOrRollback);
+		}catch (InvalidUserOrPasswordException iupe) {
+			logger.error(email, iupe);
+			throw new InvalidUserOrPasswordException(email);
 			
 		}catch (SQLException sqle) {
 			logger.error(email, sqle);
-			throw new ServiceException(email, sqle);
+			throw new DataException(email, sqle);
 			
 		}catch (Exception e) {
 			logger.error(email, e);
-			throw new ServiceException(email, e);
+			throw new DataException(email, e);
 			
 		}finally {
 			JDBCUtils.closeConnection(c, commitOrRollback);

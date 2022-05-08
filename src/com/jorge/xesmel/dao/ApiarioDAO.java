@@ -13,7 +13,7 @@ public interface ApiarioDAO {
 	
 	public List<Apiario> findBy(Connection c, ApiarioCriteria ac)throws DataException;
 	
-	public Apiario findByUsuario(Connection c, Long id)throws DataException;
+	public List<Apiario> findByUsuario(Connection c, Long id)throws DataException;
 	
 	public Long create(Connection c, Apiario a)throws DataException;
 	
